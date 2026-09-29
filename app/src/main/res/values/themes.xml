@@ -1,0 +1,6 @@
+<resources>
+    <style name="Theme.MatheApp" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">#FF7B61FF</item>
+        <item name="android:windowBackground">#FFFFF8E7</item>
+    </style>
+</resources>

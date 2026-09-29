@@ -1,0 +1,57 @@
+name: iOS
+
+on:
+  push:
+    paths: ["ios/**", ".github/workflows/ios.yml"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    defaults:
+      run:
+        working-directory: ios
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Xcode-Version
+        run: xcodebuild -version
+
+      - name: Projekt erzeugen (XcodeGen)
+        run: |
+          brew install xcodegen
+          xcodegen
+
+      - name: Unit-Tests im Simulator
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -project MatheApp.xcodeproj -scheme MatheApp \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            CODE_SIGNING_ALLOWED=NO \
+            | tee test.log
+
+      - name: Unsigniertes .ipa bauen
+        run: |
+          set -o pipefail
+          xcodebuild archive \
+            -project MatheApp.xcodeproj -scheme MatheApp -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath build/MatheApp.xcarchive \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            | tee archive.log
+          mkdir -p ipa/Payload
+          cp -R build/MatheApp.xcarchive/Products/Applications/MatheApp.app ipa/Payload/
+          (cd ipa && zip -qr ../Mathe-App.ipa Payload)
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Mathe-App-ipa
+          path: ios/Mathe-App.ipa
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: build-logs
+          path: |
+            ios/test.log
+            ios/archive.log
