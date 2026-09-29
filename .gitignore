@@ -16,3 +16,5 @@ ios/ipa/
 ios/*.log
 ios/*.ipa
 *.apk
+*.ipa
+ios-build/

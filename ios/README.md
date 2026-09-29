@@ -3,7 +3,15 @@
 Gleicher Funktionsumfang wie die Android-App: Profile, Einmaleins und Plus & Minus, Spiel auf Zeit mit 4 Leveln,
 Üben, Bestenlisten pro Fach und Level. Nur eigene Swift-Dateien, keine Abhängigkeiten. iOS 16 oder neuer.
 
-**Nicht auf einem Mac gebaut oder getestet** – der Code wurde unter Windows geschrieben.
+Gebaut und getestet wird automatisch auf GitHub Actions (macOS-Runner, `.github/workflows/ios.yml`): Unit-Tests im
+Simulator und ein unsigniertes `Mathe-App.ipa` als Artefakt. Auf einem echten iPhone wurde die App noch nicht ausprobiert.
+
+## Kostenlos aufs iPhone (von Windows)
+
+1. Neuestes `Mathe-App.ipa` aus dem Actions-Lauf laden (Artefakt `Mathe-App-ipa`) oder `gh run download`.
+2. iPhone: *Einstellungen > Datenschutz & Sicherheit > Entwicklermodus* einschalten. PC: iTunes/Apple-Geräte-Treiber installieren.
+3. Mit [Sideloadly](https://sideloadly.io) (oder AltStore) per USB und kostenloser Apple-ID signieren und installieren.
+4. Mit kostenloser Apple-ID läuft die App 7 Tage, dann neu installieren.
 
 ## Bauen (auf einem Mac mit Xcode 15+)
 
